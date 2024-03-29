@@ -118,6 +118,7 @@ signing {
     val signingKey = System.getenv("SIGNING_KEY")
     val signingKeyId = System.getenv("SIGNING_KEY_ID")
     val signingPassword = System.getenv("SIGNING_PASSWORD")
+    println("Signing Key ID: $signingKeyId")
     useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
     sign(publishing.publications["mavenJava"])
 }
