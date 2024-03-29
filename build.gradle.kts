@@ -115,9 +115,9 @@ publishing {
 signing {
     // https://docs.gradle.org/current/userguide/signing_plugin.html#using_in_memory_ascii_armored_openpgp_subkeys
     // export ORG_GRADLE_PROJECT_signingKey=$(gpg2 --export-secret-keys --armor {keyId} | grep -v '\-\-' | grep -v '^=.' | tr -d '\n')
-    val signingKey: String? by project
-    val signingKeyId: String? by project
-    val signingPassword: String? by project
+    val signingKey = System.getenv("SIGNING_KEY")
+    val signingKeyId = System.getenv("SIGNING_KEY_ID")
+    val signingPassword = System.getenv("SIGNING_PASSWORD")
     useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
     sign(publishing.publications["mavenJava"])
 }
