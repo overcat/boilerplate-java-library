@@ -115,9 +115,9 @@ publishing {
 signing {
     // https://docs.gradle.org/current/userguide/signing_plugin.html#using_in_memory_ascii_armored_openpgp_subkeys
     // export ORG_GRADLE_PROJECT_signingKey=$(gpg2 --export-secret-keys --armor {keyId} | grep -v '\-\-' | grep -v '^=.' | tr -d '\n')
-    val signingKey = System.getenv("SIGNING_KEY")
-    val signingKeyId = System.getenv("SIGNING_KEY_ID")
-    val signingPassword = System.getenv("SIGNING_PASSWORD")
+    val signingKey = System.getenv("secrets.SIGNING_KEY")
+    val signingKeyId = System.getenv("secrets.SIGNING_KEY_ID")
+    val signingPassword = System.getenv("secrets.SIGNING_PASSWORD")
     println("Signing Key ID: $signingKeyId")
     useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
     sign(publishing.publications["mavenJava"])
@@ -126,8 +126,8 @@ signing {
 nmcp {
     // https://github.com/GradleUp/nmcp
     publishAllProjectsProbablyBreakingProjectIsolation {
-        username = System.getenv("SONATYPE_USERNAME")
-        password = System.getenv("SONATYPE_PASSWORD")
+        username = System.getenv("secrets.SONATYPE_USERNAME")
+        password = System.getenv("secrets.SONATYPE_PASSWORD")
         // publish manually from the portal
         publicationType = "USER_MANAGED"
         // or if you want to publish automatically
