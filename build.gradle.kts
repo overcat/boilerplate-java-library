@@ -113,9 +113,8 @@ publishing {
 }
 
 signing {
-    isRequired = gradle.startParameter.taskNames.any { taskName ->
-        taskName.contains("publish")
-    }
+    val publishCommand = "publishAllPublicationsToCentralPortal"
+    isRequired = gradle.startParameter.taskNames.contains(publishCommand)
     println("Is signing required: $isRequired")
     // https://docs.gradle.org/current/userguide/signing_plugin.html#using_in_memory_ascii_armored_openpgp_subkeys
     // export ORG_GRADLE_PROJECT_signingKey=$(gpg2 --export-secret-keys --armor {keyId} | grep -v '\-\-' | grep -v '^=.' | tr -d '\n')
