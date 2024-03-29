@@ -113,11 +113,18 @@ publishing {
 }
 
 signing {
+    isRequired = gradle.startParameter.taskNames.any { taskName ->
+        taskName.contains("publish")
+    }
+    println("Is signing required: $isRequired")
     // https://docs.gradle.org/current/userguide/signing_plugin.html#using_in_memory_ascii_armored_openpgp_subkeys
     // export ORG_GRADLE_PROJECT_signingKey=$(gpg2 --export-secret-keys --armor {keyId} | grep -v '\-\-' | grep -v '^=.' | tr -d '\n')
     val signingKey = System.getenv("SIGNING_KEY")
     val signingKeyId = System.getenv("SIGNING_KEY_ID")
     val signingPassword = System.getenv("SIGNING_PASSWORD")
+    if (isRequired && (signingKey == null || signingKeyId == null || signingPassword == null)) {
+        throw IllegalStateException("Please set the SIGNING_KEY, SIGNING_KEY_ID, and SIGNING_PASSWORD environment variables.")
+    }
     println("Signing Key ID: $signingKeyId")
     useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
     sign(publishing.publications["mavenJava"])
